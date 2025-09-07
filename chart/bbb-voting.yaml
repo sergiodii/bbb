@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bbb-voting
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bbb-voting
+  template:
+    metadata:
+      labels:
+        app: bbb-voting
+    spec:
+      containers:
+      - name: bbb-voting
+        image: bbb-voting:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: REDIS_ADDR
+          value: "redis:6379"
+        - name: PORT
+          value: "8080"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bbb-voting
+spec:
+  type: ClusterIP
+  selector:
+    app: bbb-voting
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
