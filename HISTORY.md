@@ -50,6 +50,8 @@ Sistema de votação do paredão do BBB desenvolvido em Go, seguindo Clean Archi
 - `SEQUENTIAL_WITH_FIRST_RESULT`: Para consultas com failover
 - `SEQUENTIAL_BLOCKING_ONLY_FIRST`: Para comandos com replicação assíncrona
 
+**O Pipeline pode ser usado para colocar multiplos processos para garantia de persistência de dados.**
+
 ### 2. Canal Thread-Safe (`extension/channel/`)
 **Criado:** `SafeChannel` com controle de estado para prevenir envio em canais fechados
 
