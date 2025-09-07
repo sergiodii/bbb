@@ -3,7 +3,7 @@ package vote
 import (
 	"github.com/gin-gonic/gin"
 
-	queryUsecase "globo_test/internal/usecase/vote/query"
+	queryUsecase "github.com/sergiodii/bbb/internal/usecase/vote/query"
 )
 
 type queryRoute struct {

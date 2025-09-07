@@ -11,7 +11,7 @@ O sistema implementa CQRS com APIs separadas para escalabilidade independente:
 
 ### Estrutura do Projeto
 ```
-globo_test/
+github.com/sergiodii/bbb/
 ├── cmd/                    # Comandos CLI e APIs
 ├── internal/domain/        # Entidades e interfaces de domínio
 ├── internal/usecase/       # Casos de uso (CQRS: command/query)

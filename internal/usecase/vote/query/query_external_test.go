@@ -2,12 +2,13 @@ package query_test
 
 import (
 	"context"
-	"globo_test/internal/usecase/vote/query"
 	"testing"
+
+	"github.com/sergiodii/bbb/internal/usecase/vote/query"
 
 	"github.com/stretchr/testify/assert"
 
-	usecaseVote "globo_test/internal/usecase/vote"
+	usecaseVote "github.com/sergiodii/bbb/internal/usecase/vote"
 )
 
 type pipeMock struct {

@@ -4,11 +4,11 @@ import (
 	"context"
 	"sync"
 
-	"globo_test/extension/pipe"
-	"globo_test/internal/domain/entity"
-	"globo_test/internal/domain/repository"
-	voteUsecase "globo_test/internal/usecase/vote"
-	commandVoteUsecase "globo_test/internal/usecase/vote/command"
+	"github.com/sergiodii/bbb/extension/pipe"
+	"github.com/sergiodii/bbb/internal/domain/entity"
+	"github.com/sergiodii/bbb/internal/domain/repository"
+	voteUsecase "github.com/sergiodii/bbb/internal/usecase/vote"
+	commandVoteUsecase "github.com/sergiodii/bbb/internal/usecase/vote/command"
 )
 
 var commandAggregated *commandAggregator

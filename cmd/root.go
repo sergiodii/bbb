@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
-	"globo_test/cmd/api"
-	"globo_test/cmd/incrementtest"
 	"os"
+
+	"github.com/sergiodii/bbb/cmd/api"
+	"github.com/sergiodii/bbb/cmd/incrementtest"
 
 	"github.com/spf13/cobra"
 )

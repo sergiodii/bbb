@@ -1,10 +1,11 @@
 package api
 
 import (
-	"globo_test/cmd/api/route/vote"
-	"globo_test/internal/usecase/vote/aggregator"
-	"globo_test/pkg/redis"
 	"os"
+
+	"github.com/sergiodii/bbb/cmd/api/route/vote"
+	"github.com/sergiodii/bbb/internal/usecase/vote/aggregator"
+	"github.com/sergiodii/bbb/pkg/redis"
 
 	"github.com/gin-gonic/gin"
 )

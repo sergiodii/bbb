@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	usecaseVote "globo_test/internal/usecase/vote"
+	usecaseVote "github.com/sergiodii/bbb/internal/usecase/vote"
 )
 
 type queryVote struct {

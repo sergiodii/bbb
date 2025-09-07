@@ -1,6 +1,6 @@
 package main
 
-import "globo_test/cmd"
+import "github.com/sergiodii/bbb/cmd"
 
 func main() {
 	cmd.Execute()

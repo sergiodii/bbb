@@ -11,7 +11,7 @@
 ### 1.2. Clonando e Configurando
 ```bash
 git clone <repository-url>
-cd globo_test
+cd github.com/sergiodii/bbb
 go mod tidy
 ```
 

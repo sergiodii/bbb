@@ -3,9 +3,10 @@ package localsql
 import (
 	"context"
 	"fmt"
-	"globo_test/internal/domain/entity"
-	"globo_test/internal/domain/repository"
 	"sync"
+
+	"github.com/sergiodii/bbb/internal/domain/entity"
+	"github.com/sergiodii/bbb/internal/domain/repository"
 )
 
 var _LocalSqlRoundRepository *LocalSqlRoundRepository

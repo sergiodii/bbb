@@ -1,7 +1,7 @@
 package vote
 
 import (
-	"globo_test/internal/usecase/vote/aggregator"
+	"github.com/sergiodii/bbb/internal/usecase/vote/aggregator"
 
 	"github.com/gin-gonic/gin"
 )

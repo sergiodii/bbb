@@ -2,8 +2,9 @@ package localsql
 
 import (
 	"context"
-	"globo_test/internal/domain/entity"
 	"testing"
+
+	"github.com/sergiodii/bbb/internal/domain/entity"
 
 	"github.com/alicebob/miniredis/v2"
 	"github.com/stretchr/testify/assert"

@@ -1,11 +1,10 @@
-module globo_test
+module github.com/sergiodii/bbb
 
 go 1.23.0
 
 toolchain go1.24.0
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/alicebob/miniredis/v2 v2.35.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-redis/redis/v8 v8.11.5

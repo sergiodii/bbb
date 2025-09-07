@@ -2,10 +2,11 @@ package query
 
 import (
 	"context"
-	"globo_test/internal/usecase/vote/query/mock"
 	"testing"
 
-	usecaseVote "globo_test/internal/usecase/vote"
+	"github.com/sergiodii/bbb/internal/usecase/vote/query/mock"
+
+	usecaseVote "github.com/sergiodii/bbb/internal/usecase/vote"
 )
 
 func TestNewQueryVote(t *testing.T) {

@@ -2,10 +2,11 @@ package command
 
 import (
 	"context"
-	"globo_test/internal/domain/entity"
-	usecaseVote "globo_test/internal/usecase/vote"
-	"globo_test/internal/usecase/vote/query/mock"
 	"testing"
+
+	"github.com/sergiodii/bbb/internal/domain/entity"
+	usecaseVote "github.com/sergiodii/bbb/internal/usecase/vote"
+	"github.com/sergiodii/bbb/internal/usecase/vote/query/mock"
 
 	"github.com/stretchr/testify/assert"
 )

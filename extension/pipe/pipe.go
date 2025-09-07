@@ -4,7 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"globo_test/extension/slice"
+
+	"github.com/sergiodii/bbb/extension/slice"
 
 	"golang.org/x/sync/errgroup"
 )

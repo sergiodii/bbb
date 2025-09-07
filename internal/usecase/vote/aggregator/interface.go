@@ -1,8 +1,8 @@
 package aggregator
 
 import (
-	commandVoteUsecase "globo_test/internal/usecase/vote/command"
-	queryVoteUsecase "globo_test/internal/usecase/vote/query"
+	commandVoteUsecase "github.com/sergiodii/bbb/internal/usecase/vote/command"
+	queryVoteUsecase "github.com/sergiodii/bbb/internal/usecase/vote/query"
 )
 
 type QueryAggregator interface {

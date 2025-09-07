@@ -9,9 +9,9 @@ import (
 	"github.com/alicebob/miniredis/v2"
 	"github.com/stretchr/testify/assert"
 
-	"globo_test/extension/slice"
-	"globo_test/internal/domain/entity"
-	redisPkg "globo_test/pkg/redis"
+	"github.com/sergiodii/bbb/extension/slice"
+	"github.com/sergiodii/bbb/internal/domain/entity"
+	redisPkg "github.com/sergiodii/bbb/pkg/redis"
 )
 
 func TestRedisEstress(t *testing.T) {

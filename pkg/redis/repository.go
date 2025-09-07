@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"sync"
 
-	"globo_test/extension/slice"
-	"globo_test/extension/text"
-	"globo_test/internal/domain/entity"
-	"globo_test/internal/domain/repository"
+	"github.com/sergiodii/bbb/extension/slice"
+	"github.com/sergiodii/bbb/extension/text"
+	"github.com/sergiodii/bbb/internal/domain/entity"
+	"github.com/sergiodii/bbb/internal/domain/repository"
 
 	"github.com/go-redis/redis/v8"
 	"golang.org/x/sync/errgroup"

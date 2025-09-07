@@ -7,7 +7,7 @@ O sistema foi desenvolvido seguindo os princípios de **Clean Architecture**, **
 ### 1.1. Estrutura de Pastas
 
 ```
-globo_test/
+github.com/sergiodii/bbb/
 ├── cmd/                        # Comandos CLI (entry points)
 │   ├── api/                   # APIs REST (unificada, query, command)
 │   ├── incrementtest/         # Comando para testes de performance

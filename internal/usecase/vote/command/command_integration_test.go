@@ -2,13 +2,14 @@ package command_test
 
 import (
 	"context"
-	"globo_test/internal/domain/entity"
-	"globo_test/internal/usecase/vote/command"
 	"testing"
+
+	"github.com/sergiodii/bbb/internal/domain/entity"
+	"github.com/sergiodii/bbb/internal/usecase/vote/command"
 
 	"github.com/stretchr/testify/assert"
 
-	usecaseVote "globo_test/internal/usecase/vote"
+	usecaseVote "github.com/sergiodii/bbb/internal/usecase/vote"
 )
 
 type pipeMock struct {

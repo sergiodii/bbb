@@ -1,6 +1,6 @@
 package query
 
-import usecaseVote "globo_test/internal/usecase/vote"
+import usecaseVote "github.com/sergiodii/bbb/internal/usecase/vote"
 
 type QueryDTO struct {
 	RoundID       string

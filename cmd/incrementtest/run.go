@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/sergiodii/bbb/extension/slice"
 	"github.com/spf13/cobra"
 )
 
@@ -33,26 +34,39 @@ func IncrementTestCommand() *cobra.Command {
 		maxIncrements := 1000
 		commandApiUrl, _ := cmd.Flags().GetString("command-api-url")
 
+		participants := []string{}
+		for i := 0; i < maxIncrements; i++ {
+			participants = append(participants, getRandomStringFromSlice())
+		}
+
 		start := time.Now()
 		fmt.Printf("\n[STARTING INCREMENT TEST] Iniciando teste de incremento com %d requisições para a API de comandos %s...\n", maxIncrements, commandApiUrl)
 
-		wg := sync.WaitGroup{}
+		for _, l := range slice.TransformSliceToMultipleSlices(participants, 100) {
+			wg := sync.WaitGroup{}
+			for _, participant := range l {
+				wg.Add(1)
+				go func(p string) {
+					defer wg.Done()
+					body := fmt.Sprintf(`{"participant_id": "%v"}`, p)
+					_, err := http.Post("http://"+commandApiUrl+"/round2", "application/json", strings.NewReader(body))
+					if err != nil {
+						fmt.Println("Participant ID:", body, ", Error:", err)
+					}
+				}(participant)
 
-		for i := 0; i < maxIncrements; i++ {
-			wg.Add(1)
-			go func() {
-				defer wg.Done()
-				body := fmt.Sprintf(`{"participant_id": "%v"}`, getRandomStringFromSlice())
-				_, err := http.Post("http://"+commandApiUrl+"/round2", "application/json", strings.NewReader(body))
-				if err != nil {
-					fmt.Println("Participant ID:", body, ", Error:", err)
-				}
-			}()
+			}
+			wg.Wait()
 		}
-		wg.Wait()
 
 		elapsed := time.Since(start)
-		fmt.Printf("\n[FINISHED INCREMENT TEST] Teste de incremento finalizado em %f segundos\n", elapsed.Seconds())
+
+		// Se o teste demorar mais de 1 segundo, exibe um aviso.
+		if elapsed.Seconds() > 1 {
+			fmt.Printf("[WARNING][FINISHED INCREMENT TEST] O teste de incremento demorou mais de 1 segundo, finalizando em: %f segundos\n", elapsed.Seconds())
+			return
+		}
+		fmt.Printf("[FINISHED INCREMENT TEST] Teste de incremento finalizado em %f segundos\n", elapsed.Seconds())
 
 	}
 

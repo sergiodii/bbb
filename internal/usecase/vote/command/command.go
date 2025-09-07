@@ -3,8 +3,9 @@ package command
 import (
 	"context"
 	"fmt"
-	"globo_test/internal/domain/entity"
-	usecaseVote "globo_test/internal/usecase/vote"
+
+	"github.com/sergiodii/bbb/internal/domain/entity"
+	usecaseVote "github.com/sergiodii/bbb/internal/usecase/vote"
 )
 
 type commandVote struct {

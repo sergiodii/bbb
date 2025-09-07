@@ -1,9 +1,10 @@
 package vote
 
 import (
-	"globo_test/internal/domain/entity"
-	commandUsecase "globo_test/internal/usecase/vote/command"
 	"time"
+
+	"github.com/sergiodii/bbb/internal/domain/entity"
+	commandUsecase "github.com/sergiodii/bbb/internal/usecase/vote/command"
 
 	"github.com/gin-gonic/gin"
 )

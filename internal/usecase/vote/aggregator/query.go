@@ -2,10 +2,11 @@ package aggregator
 
 import (
 	"context"
-	"globo_test/extension/pipe"
-	"globo_test/internal/domain/repository"
-	voteUsecase "globo_test/internal/usecase/vote"
-	queryVoteUsecase "globo_test/internal/usecase/vote/query"
+
+	"github.com/sergiodii/bbb/extension/pipe"
+	"github.com/sergiodii/bbb/internal/domain/repository"
+	voteUsecase "github.com/sergiodii/bbb/internal/usecase/vote"
+	queryVoteUsecase "github.com/sergiodii/bbb/internal/usecase/vote/query"
 
 	"sync"
 )

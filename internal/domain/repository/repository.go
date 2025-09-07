@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"globo_test/internal/domain/entity"
+	"github.com/sergiodii/bbb/internal/domain/entity"
 )
 
 type RoundRepository interface {
