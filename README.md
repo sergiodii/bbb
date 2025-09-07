@@ -1,4 +1,4 @@
-# Sistema de Votação BBB - Globo.com
+# Sistema de Votação BBB
 
 Sistema de votação do paredão do BBB desenvolvido em Go, seguindo **Clean Architecture**, **SOLID**, **Clean Code** e implementando um padrão análogo ao **CQRS** (Command Query Responsibility Segregation).
 
