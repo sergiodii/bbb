@@ -1,4 +1,3 @@
-````markdown
 # 🎯 Sistema de Votação BBB - Desafio Globo.com
 
 > **Solução completa para o desafio de votação do paredão do BBB usando Go e arquitetura moderna**
@@ -126,6 +125,7 @@ Content-Type: application/json
   "error": "invalid request body", 
   "details": "the error text"
 }
+```
 
 **Rate Limit Excedido (429):**
 ```json
