@@ -18,15 +18,12 @@ func TestNewCommandVote(t *testing.T) {
 		// Arrange
 		pipe := mock.NewPipeMock[entity.Vote]()
 
-		orderedExecutionPipes := map[usecaseVote.HandlerFuncEnum]OrderedExecutionPipeDTO{
-			usecaseVote.HandlerFuncCreateVote: {
-				ExecutionType: "SEQUENTIAL",
-				Pipe:          pipe,
-			},
+		pipeMap := map[usecaseVote.HandlerFuncEnum]usecaseVote.Pipe[entity.Vote]{
+			usecaseVote.HandlerFuncCreateVote: pipe,
 		}
 
 		// Act
-		commandVote := NewCommandVote(orderedExecutionPipes)
+		commandVote := NewCommandVote(pipeMap)
 
 		// Assert
 		if commandVote == nil {
@@ -37,10 +34,10 @@ func TestNewCommandVote(t *testing.T) {
 	t.Run("Should handle empty orderedExecutionPipes", func(t *testing.T) {
 
 		// Arrange
-		orderedExecutionPipes := map[usecaseVote.HandlerFuncEnum]OrderedExecutionPipeDTO{}
+		pipeMap := map[usecaseVote.HandlerFuncEnum]usecaseVote.Pipe[entity.Vote]{}
 
 		// Act
-		commandVote := NewCommandVote(orderedExecutionPipes)
+		commandVote := NewCommandVote(pipeMap)
 
 		// Assert
 		if commandVote == nil {
@@ -55,16 +52,13 @@ func TestNewCommandVote(t *testing.T) {
 
 		e := entity.Vote{RoundID: "round1", ParticipantID: "participant1", Timestamp: 1234567890}
 
-		pipe.On("Execute", context.Background(), "SEQUENTIAL", e).Return(e, nil)
+		pipe.On("Execute", context.Background(), e).Return(e, nil)
 
-		orderedExecutionPipes := map[usecaseVote.HandlerFuncEnum]OrderedExecutionPipeDTO{
-			usecaseVote.HandlerFuncCreateVote: {
-				ExecutionType: "SEQUENTIAL",
-				Pipe:          pipe,
-			},
+		pipeMap := map[usecaseVote.HandlerFuncEnum]usecaseVote.Pipe[entity.Vote]{
+			usecaseVote.HandlerFuncCreateVote: pipe,
 		}
 
-		commandVote := NewCommandVote(orderedExecutionPipes)
+		commandVote := NewCommandVote(pipeMap)
 
 		// Act
 		err := commandVote.CreateVote(context.Background(), entity.Vote{RoundID: "round1", ParticipantID: "participant1", Timestamp: e.Timestamp})

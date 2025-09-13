@@ -1,6 +1,8 @@
 package query
 
-import usecaseVote "github.com/sergiodii/bbb/internal/usecase/vote"
+import (
+	usecaseVote "github.com/sergiodii/bbb/internal/usecase/vote"
+)
 
 type QueryDTO struct {
 	RoundID       string
@@ -9,6 +11,5 @@ type QueryDTO struct {
 }
 
 type OrderedExecutionPipeDTO struct {
-	ExecutionType string
-	Pipe          usecaseVote.Pipe[QueryDTO]
+	Pipe usecaseVote.Pipe[QueryDTO]
 }

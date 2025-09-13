@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/sergiodii/bbb/cmd/api"
-	"github.com/sergiodii/bbb/cmd/incrementtest"
+	"github.com/sergiodii/bbb/cmd/loadtest"
 
 	"github.com/spf13/cobra"
 )
@@ -16,7 +16,7 @@ func Execute() {
 	rootCmd.AddCommand(api.ApiCommand())
 	rootCmd.AddCommand(api.QueryApiCommand())
 	rootCmd.AddCommand(api.CommandApiCommand())
-	rootCmd.AddCommand(incrementtest.IncrementTestCommand())
+	rootCmd.AddCommand(loadtest.LoadTestCommand())
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

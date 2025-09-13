@@ -7,5 +7,3 @@ RUN go build -o bbb main.go
 FROM alpine:3.19
 WORKDIR /app
 COPY --from=builder /app/bbb .
-EXPOSE 8080
-ENV PORT=8080

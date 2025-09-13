@@ -1,36 +1,79 @@
-# Guia de Desenvolvimento
+````markdown
+# 💻 BBB Development Guide - Globo.com Voting System
 
-## 1. Configuração do Ambiente
+## 1. Quick Start - BBB Development Environment
 
-### 1.1. Pré-requisitos
-- Go 1.23+ instalado
-- Docker e Docker Compose
-- Make (para automação)
-- Redis (para desenvolvimento local - opcional, pois pode usar Docker)
+### 1.1. Prerequisites - Production Grade Setup
 
-### 1.2. Clonando e Configurando
 ```bash
-git clone <repository-url>
-cd github.com/sergiodii/bbb
-go mod tidy
+# Required tools for BBB development
+✅ Go 1.23+                    # Latest Go for performance
+✅ Docker 24.0+               # Containerization  
+✅ Docker Compose v2          # Local orchestration
+✅ Redis 7.0+                 # High-performance storage
+✅ Make                       # Build automation
+✅ Git 2.40+                  # Version control
+
+# Optional but recommended
+⚡ VS Code + Go extension     # IDE with debugging
+🔍 Redis CLI                 # Database inspection  
+📊 Prometheus + Grafana      # Local monitoring
+🧪 Postman/Insomnia         # API testing
 ```
 
-### 1.3. Variáveis de Ambiente
-```bash
-# Configuração do Redis
-REDIS_ADDR=localhost:6379
+### 1.2. BBB Project Setup
 
-# Porta da API
-PORT=8080
+```bash
+# Clone BBB voting system
+git clone https://github.com/sergiodii/bbb.git
+cd bbb
+
+# Download dependencies
+go mod tidy
+go mod verify
+
+# Verify installation
+go version                    # Should be 1.23+
+docker --version             # Should be 24.0+
+docker-compose --version     # Should be v2+
+
+# Build CLI tools
+go build -o bbb-voting .
+./bbb-voting --help          # Verify CLI works
+```
+
+### 1.3. Environment Configuration - BBB Context
+
+#### **Development Environment Variables**
+```bash
+# Create .env file for local development
+cat > .env << EOF
+REDIS_ADDR
+EOF
+
+# Load environment
+source .env
+export $(cat .env | grep -v '^#' | xargs)
+```
+
+#### **Production Environment Template**
+```bash
+# Production .env template (.env.production)
+cat > .env.production << EOF
+
+# Redis Cluster (Production)
+REDIS_ADDR=redis-cluster.bbb.internal:6379
+
+# Anti-Bot (Stricter in production)
+BLOCKED_IP_RANGES=\${BLOCKED_RANGES_CONFIG}
+
+EOF
 ```
 
 ## 2. Comandos Disponíveis
 
 ### 2.1. Makefile
 ```bash
-# Instalar dependências Cobra
-make install-cobra
-
 # Build da aplicação
 make build
 
@@ -45,9 +88,6 @@ make docker-up
 
 # Parar ambiente Docker
 make docker-down
-
-# Limpar binários
-make clean
 ```
 
 ### 2.2. Comandos CLI da Aplicação
@@ -177,11 +217,8 @@ go test -cover ./...
 func TestQueryVote_GetTotalVotes(t *testing.T) {
     // Arrange
     mockPipe := mock.NewPipeMock[QueryDTO]()
-    useCase := NewQueryVote(map[HandlerFuncEnum]OrderedExecutionPipeDTO{
-        HandlerFuncGetTotalVotes: {
-            ExecutionType: "SEQUENTIAL",
-            Pipe: mockPipe,
-        },
+    useCase := NewQueryVote(map[HandlerFuncEnum]Pipe[QueryDTO]{
+        HandlerFuncGetTotalVotes: mockPipe,
     })
     
     // Act & Assert
@@ -215,23 +252,9 @@ mockgen -source=internal/usecase/vote/query/interface.go -destination=internal/u
 
 ### 6.1. Teste de Performance
 ```bash
-# Executar teste de incremento
-go run . increment-test
+# Executar teste de carga
+go run . loadtest
 
-# Profile de CPU
-go test -cpuprofile=cpu.prof -bench=.
-
-# Profile de memória  
-go test -memprofile=mem.prof -bench=.
-```
-
-### 6.2. Logs e Debugging
-```go
-// Use contexto para rastreamento
-ctx = context.WithValue(ctx, "requestID", requestID)
-
-// Logs estruturados (considere usar logrus ou zap)
-log.Printf("[%s] Processing vote for round: %s", requestID, roundID)
 ```
 
 ## 7. Deploy e Distribuição
@@ -244,41 +267,3 @@ CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
 # Build com Docker
 docker build -t bbb-voting:latest .
 ```
-
-### 7.2. Kubernetes
-```bash
-# Deploy
-kubectl apply -f chart/
-
-# Verificar status
-kubectl get pods -l app=bbb-voting
-
-# Logs
-kubectl logs -f deployment/bbb-voting
-```
-
-## 8. Boas Práticas
-
-### 8.1. Git
-- Commits pequenos e focados
-- Mensagens descritivas
-- Branch por feature/bugfix
-- Pull requests para code review
-
-### 8.2. Código
-- Sempre execute `go fmt` antes de commit
-- Use `go vet` para verificar problemas
-- Mantenha cobertura de testes > 80%
-- Documente APIs públicas
-
-### 8.3. Performance
-- Use pipeline com moderação (evite over-engineering)
-- Monitor uso de goroutines
-- Profile aplicação em ambiente similar à produção
-- Cache dados quando apropriado (Redis)
-
-### 8.4. Segurança
-- Validação de entrada em todas as APIs
-- Rate limiting implementado
-- Logs não devem expor dados sensíveis
-- Use HTTPS em produção

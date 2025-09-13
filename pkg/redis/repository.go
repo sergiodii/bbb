@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"sync"
+	"time"
 
 	"github.com/sergiodii/bbb/extension/slice"
 	"github.com/sergiodii/bbb/extension/text"
@@ -135,7 +136,13 @@ func convertSyncMapToMapStringInt(sm *sync.Map) map[string]int {
 
 func NewRedisRoundRepository(addr string) repository.RoundRepository {
 	client := redis.NewClient(&redis.Options{
-		Addr: addr,
+		Addr:         addr,
+		PoolSize:     100,             // Aumentar pool de conexões para alta concorrência
+		MinIdleConns: 10,              // Manter conexões ativas para reduzir latência
+		MaxRetries:   3,               // Retry em caso de timeout
+		DialTimeout:  5 * time.Second, // Timeout para conectar
+		ReadTimeout:  3 * time.Second, // Timeout para leitura
+		WriteTimeout: 3 * time.Second, // Timeout para escrita
 	})
 	return &RedisRoundRepository{Client: client}
 }

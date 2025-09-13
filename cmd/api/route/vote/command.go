@@ -1,6 +1,7 @@
 package vote
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/sergiodii/bbb/internal/domain/entity"
@@ -22,7 +23,7 @@ func (q *commandRoute) postCreateVote() func(c *gin.Context) {
 		}
 
 		if err := c.BindJSON(&body); err != nil {
-			c.JSON(400, gin.H{"error": "invalid request body"})
+			c.JSON(400, gin.H{"error": "invalid request body", "details": err.Error()})
 			return
 		}
 
@@ -34,6 +35,7 @@ func (q *commandRoute) postCreateVote() func(c *gin.Context) {
 
 		err := q.uc.CreateVote(c.Request.Context(), ev)
 		if err != nil {
+			fmt.Printf("[ERROR] CreateVote failed for round %s, participant %s: %v\n", roundId, body.ParticipantID, err)
 			c.JSON(500, gin.H{"error": err.Error()})
 			return
 		}

@@ -16,15 +16,12 @@ func TestNewQueryVote(t *testing.T) {
 		// Arrange
 		pipe := mock.NewPipeMock[QueryDTO]()
 
-		orderedExecutionPipes := map[usecaseVote.HandlerFuncEnum]OrderedExecutionPipeDTO{
-			usecaseVote.HandlerFuncGetTotalVotes: {
-				ExecutionType: "SEQUENTIAL",
-				Pipe:          pipe,
-			},
+		pipeMap := map[usecaseVote.HandlerFuncEnum]usecaseVote.Pipe[QueryDTO]{
+			usecaseVote.HandlerFuncGetTotalVotes: pipe,
 		}
 
 		// Act
-		queryVote := NewQueryVote(orderedExecutionPipes)
+		queryVote := NewQueryVote(pipeMap)
 
 		// Assert
 		if queryVote == nil {
@@ -35,7 +32,7 @@ func TestNewQueryVote(t *testing.T) {
 	t.Run("Should handle empty orderedExecutionPipes", func(t *testing.T) {
 
 		// Arrange
-		orderedExecutionPipes := map[usecaseVote.HandlerFuncEnum]OrderedExecutionPipeDTO{}
+		orderedExecutionPipes := map[usecaseVote.HandlerFuncEnum]usecaseVote.Pipe[QueryDTO]{}
 
 		// Act
 		queryVote := NewQueryVote(orderedExecutionPipes)
@@ -51,13 +48,10 @@ func TestNewQueryVote(t *testing.T) {
 		// Arrange
 		pipe := mock.NewPipeMock[QueryDTO]()
 
-		pipe.On("Execute", context.Background(), "SEQUENTIAL", QueryDTO{RoundID: "round1"}).Return(QueryDTO{Result: 42}, nil)
+		pipe.On("Execute", context.Background(), QueryDTO{RoundID: "round1"}).Return(QueryDTO{Result: 42}, nil)
 
-		orderedExecutionPipes := map[usecaseVote.HandlerFuncEnum]OrderedExecutionPipeDTO{
-			usecaseVote.HandlerFuncGetTotalVotes: {
-				ExecutionType: "SEQUENTIAL",
-				Pipe:          pipe,
-			},
+		orderedExecutionPipes := map[usecaseVote.HandlerFuncEnum]usecaseVote.Pipe[QueryDTO]{
+			usecaseVote.HandlerFuncGetTotalVotes: pipe,
 		}
 
 		queryVote := NewQueryVote(orderedExecutionPipes)
@@ -80,13 +74,10 @@ func TestNewQueryVote(t *testing.T) {
 		pipe := mock.NewPipeMock[QueryDTO]()
 
 		expectedResult := map[string]int{"participant1": 10, "participant2": 20}
-		pipe.On("Execute", context.Background(), "SEQUENTIAL", QueryDTO{RoundID: "round1"}).Return(QueryDTO{Result: expectedResult}, nil)
+		pipe.On("Execute", context.Background(), QueryDTO{RoundID: "round1"}).Return(QueryDTO{Result: expectedResult}, nil)
 
-		orderedExecutionPipes := map[usecaseVote.HandlerFuncEnum]OrderedExecutionPipeDTO{
-			usecaseVote.HandlerFuncGetTotalVotesForParticipant: {
-				ExecutionType: "SEQUENTIAL",
-				Pipe:          pipe,
-			},
+		orderedExecutionPipes := map[usecaseVote.HandlerFuncEnum]usecaseVote.Pipe[QueryDTO]{
+			usecaseVote.HandlerFuncGetTotalVotesForParticipant: pipe,
 		}
 
 		queryVote := NewQueryVote(orderedExecutionPipes)
@@ -113,13 +104,10 @@ func TestNewQueryVote(t *testing.T) {
 		pipe := mock.NewPipeMock[QueryDTO]()
 
 		expectedResult := map[string]int{"10:00": 5, "11:00": 15}
-		pipe.On("Execute", context.Background(), "SEQUENTIAL", QueryDTO{RoundID: "round1"}).Return(QueryDTO{Result: expectedResult}, nil)
+		pipe.On("Execute", context.Background(), QueryDTO{RoundID: "round1"}).Return(QueryDTO{Result: expectedResult}, nil)
 
-		orderedExecutionPipes := map[usecaseVote.HandlerFuncEnum]OrderedExecutionPipeDTO{
-			usecaseVote.HandlerFuncGetTotalVotesForHour: {
-				ExecutionType: "SEQUENTIAL",
-				Pipe:          pipe,
-			},
+		orderedExecutionPipes := map[usecaseVote.HandlerFuncEnum]usecaseVote.Pipe[QueryDTO]{
+			usecaseVote.HandlerFuncGetTotalVotesForHour: pipe,
 		}
 
 		queryVote := NewQueryVote(orderedExecutionPipes)

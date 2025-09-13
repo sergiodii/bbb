@@ -20,7 +20,7 @@ type commandAggregator struct {
 }
 
 func (a *commandAggregator) aggregateVoteRegisterHandler() pipe.Pipe[entity.Vote] {
-	p := pipe.NewPipe[entity.Vote]()
+	p := pipe.NewPipe[entity.Vote](pipe.SEQUENTIAL_BLOCKING_ONLY_FIRST)
 	for _, exec := range a.repositories {
 		p.Enqueue(func(ctx context.Context, dto entity.Vote) (entity.Vote, error) {
 			err := exec.VoteRegister(ctx, dto)
@@ -35,11 +35,8 @@ func (a *commandAggregator) aggregateVoteRegisterHandler() pipe.Pipe[entity.Vote
 
 func (a *commandAggregator) GetAggregatedUseCase() commandVoteUsecase.CommandVoteUseCase {
 
-	executionMap := map[voteUsecase.HandlerFuncEnum]commandVoteUsecase.OrderedExecutionPipeDTO{
-		voteUsecase.HandlerFuncCreateVote: {
-			ExecutionType: pipe.SEQUENTIAL_BLOCKING_ONLY_FIRST.String(),
-			Pipe:          a.aggregateVoteRegisterHandler(),
-		},
+	executionMap := map[voteUsecase.HandlerFuncEnum]voteUsecase.Pipe[entity.Vote]{
+		voteUsecase.HandlerFuncCreateVote: a.aggregateVoteRegisterHandler(),
 	}
 	return commandVoteUsecase.NewCommandVote(executionMap)
 }

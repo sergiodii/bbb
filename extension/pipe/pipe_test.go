@@ -11,16 +11,14 @@ import (
 func TestPipe(t *testing.T) {
 	t.Run("Sequential Execution", func(t *testing.T) {
 		// Arrange
-		pipe := NewPipe[int]()
-		pipe.Enqueue(func(ctx context.Context, i int) (int, error) {
+		pipe := NewPipe(SEQUENTIAL, func(ctx context.Context, i int) (int, error) {
 			return i + 1, nil
-		})
-		pipe.Enqueue(func(ctx context.Context, i int) (int, error) {
+		}, func(ctx context.Context, i int) (int, error) {
 			return i * 2, nil
 		})
 
 		// Act
-		result, err := pipe.Execute(context.Background(), "SEQUENTIAL", 1)
+		result, err := pipe.Execute(context.Background(), 1)
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
 		}
@@ -38,8 +36,6 @@ func TestPipe(t *testing.T) {
 
 	t.Run("Concurrent Execution", func(t *testing.T) {
 		// Arrange
-		pipe := NewPipe[int]()
-
 		count := 0
 
 		f := func(ctx context.Context, i int) (int, error) {
@@ -47,13 +43,14 @@ func TestPipe(t *testing.T) {
 			count++
 			return 1 + i, nil
 		}
+		pipe := NewPipe[int](CONCURRENT)
 
 		pipe.Enqueue(f)
 		pipe.Enqueue(f)
 		pipe.Enqueue(f)
 
 		// Act
-		result, err := pipe.Execute(context.Background(), "CONCURRENT", 1)
+		result, err := pipe.Execute(context.Background(), 1)
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
 		}
@@ -74,7 +71,7 @@ func TestPipe(t *testing.T) {
 
 	t.Run("Sequential with First Result Execution", func(t *testing.T) {
 		// Arrange
-		pipe := NewPipe[int]()
+		pipe := NewPipe[int](SEQUENTIAL_WITH_FIRST_RESULT)
 		pipe.Enqueue(func(ctx context.Context, i int) (int, error) {
 			return 0, assert.AnError
 		})
@@ -86,7 +83,7 @@ func TestPipe(t *testing.T) {
 		})
 
 		// Act
-		result, err := pipe.Execute(context.Background(), SEQUENTIAL_WITH_FIRST_RESULT.String(), 2)
+		result, err := pipe.Execute(context.Background(), 2)
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
 		}
@@ -105,7 +102,7 @@ func TestPipe(t *testing.T) {
 
 	t.Run("Skip ObjectNotFound errors in Sequential with First Result Execution", func(t *testing.T) {
 		// Arrange
-		pipe := NewPipe[int]()
+		pipe := NewPipe[int](SEQUENTIAL_WITH_FIRST_RESULT)
 		pipe.Enqueue(func(ctx context.Context, i int) (int, error) {
 			return 0, ONF
 		})
@@ -117,7 +114,7 @@ func TestPipe(t *testing.T) {
 		})
 
 		// Act
-		result, err := pipe.Execute(context.Background(), SEQUENTIAL_WITH_FIRST_RESULT.String(), 3)
+		result, err := pipe.Execute(context.Background(), 3)
 		if err != nil {
 			t.Fatalf("expected no error, got %v", err)
 		}
@@ -139,7 +136,7 @@ func TestPipe(t *testing.T) {
 		ch := make(chan int)
 
 		// Arrange
-		pipe := NewPipe[int]()
+		pipe := NewPipe[int](SEQUENTIAL_BLOCKING_ONLY_FIRST)
 		pipe.Enqueue(func(ctx context.Context, i int) (int, error) {
 			return i + 10, nil
 		})
@@ -159,7 +156,7 @@ func TestPipe(t *testing.T) {
 		})
 
 		// Act
-		result, err := pipe.Execute(context.Background(), SEQUENTIAL_BLOCKING_ONLY_FIRST.String(), 5)
+		result, err := pipe.Execute(context.Background(), 5)
 		assert.NoError(t, err)
 
 		v := 0

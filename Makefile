@@ -16,8 +16,11 @@ build: install-cobra
 run: build
 	./$(APP)
 
+test-output:
+	go test -coverprofile=coverage.out ./...
+
 test:
-	go test ./...
+	go test -cover ./...
 
 docker-up:
 	docker-compose up --build
@@ -31,3 +34,6 @@ clean:
 setup:
 	go install github.com/golang/mock/mockgen@latest
 	go get github.com/stretchr/testify/mock
+
+loadtest:
+	go run . loadtest 

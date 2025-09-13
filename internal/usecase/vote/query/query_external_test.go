@@ -19,7 +19,7 @@ func (p *pipeMock) Enqueue(funcs ...func(context.Context, query.QueryDTO) (query
 	p.ExecutedFuncs = append(p.ExecutedFuncs, funcs...)
 }
 
-func (p *pipeMock) Execute(ctx context.Context, executionType string, dto query.QueryDTO) (query.QueryDTO, error) {
+func (p *pipeMock) Execute(ctx context.Context, dto query.QueryDTO) (query.QueryDTO, error) {
 	var err error
 	for _, fn := range p.ExecutedFuncs {
 		dto, err = fn(ctx, dto)
@@ -39,11 +39,8 @@ func TestGetVotesFromParticipant(t *testing.T) {
 			return dto, nil
 		})
 
-		execution := map[usecaseVote.HandlerFuncEnum]query.OrderedExecutionPipeDTO{
-			usecaseVote.HandlerFuncGetTotalVotes: {
-				ExecutionType: "SEQUENTIAL",
-				Pipe:          pm,
-			},
+		execution := map[usecaseVote.HandlerFuncEnum]usecaseVote.Pipe[query.QueryDTO]{
+			usecaseVote.HandlerFuncGetTotalVotes: pm,
 		}
 
 		q := query.NewQueryVote(execution)
@@ -59,11 +56,8 @@ func TestGetVotesFromParticipant(t *testing.T) {
 			return dto, nil
 		})
 
-		execution := map[usecaseVote.HandlerFuncEnum]query.OrderedExecutionPipeDTO{
-			usecaseVote.HandlerFuncGetTotalVotesForParticipant: {
-				ExecutionType: "SEQUENTIAL",
-				Pipe:          pm,
-			},
+		execution := map[usecaseVote.HandlerFuncEnum]usecaseVote.Pipe[query.QueryDTO]{
+			usecaseVote.HandlerFuncGetTotalVotesForParticipant: pm,
 		}
 
 		q := query.NewQueryVote(execution)
@@ -86,11 +80,8 @@ func TestGetVotesFromParticipant(t *testing.T) {
 			return dto, nil
 		})
 
-		execution := map[usecaseVote.HandlerFuncEnum]query.OrderedExecutionPipeDTO{
-			usecaseVote.HandlerFuncGetTotalVotesForParticipant: {
-				ExecutionType: "SEQUENTIAL",
-				Pipe:          pm,
-			},
+		execution := map[usecaseVote.HandlerFuncEnum]usecaseVote.Pipe[query.QueryDTO]{
+			usecaseVote.HandlerFuncGetTotalVotesForParticipant: pm,
 		}
 
 		q := query.NewQueryVote(execution)
@@ -106,21 +97,9 @@ func TestGetVotesFromParticipant(t *testing.T) {
 			return dto, assert.AnError
 		})
 
-		execution := map[usecaseVote.HandlerFuncEnum]query.OrderedExecutionPipeDTO{
-			usecaseVote.HandlerFuncGetTotalVotes: {
-				ExecutionType: "SEQUENTIAL",
-				Pipe:          pm,
-			},
+		execution := map[usecaseVote.HandlerFuncEnum]usecaseVote.Pipe[query.QueryDTO]{
+			usecaseVote.HandlerFuncGetTotalVotes: pm,
 		}
-
-		q := query.NewQueryVote(execution)
-		_, err := q.GetTotalVotes(context.Background(), "1")
-		assert.Error(t, err)
-	})
-
-	t.Run("Should handle missing pipe", func(t *testing.T) {
-
-		execution := map[usecaseVote.HandlerFuncEnum]query.OrderedExecutionPipeDTO{}
 
 		q := query.NewQueryVote(execution)
 		_, err := q.GetTotalVotes(context.Background(), "1")

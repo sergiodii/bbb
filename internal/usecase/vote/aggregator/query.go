@@ -20,7 +20,7 @@ type queryAggregator struct {
 }
 
 func (a *queryAggregator) aggregateTotalVotesHandler() pipe.Pipe[queryVoteUsecase.QueryDTO] {
-	p := pipe.NewPipe[queryVoteUsecase.QueryDTO]()
+	p := pipe.NewPipe[queryVoteUsecase.QueryDTO](pipe.SEQUENTIAL_WITH_FIRST_RESULT)
 	for _, exec := range a.repositories {
 		p.Enqueue(func(ctx context.Context, dto queryVoteUsecase.QueryDTO) (queryVoteUsecase.QueryDTO, error) {
 			total, err := exec.GetTotalVotes(ctx, dto.RoundID)
@@ -41,7 +41,7 @@ func (a *queryAggregator) aggregateTotalVotesHandler() pipe.Pipe[queryVoteUsecas
 }
 
 func (a *queryAggregator) aggregateTotalVotesForParticipantHandler() pipe.Pipe[queryVoteUsecase.QueryDTO] {
-	p := pipe.NewPipe[queryVoteUsecase.QueryDTO]()
+	p := pipe.NewPipe[queryVoteUsecase.QueryDTO](pipe.SEQUENTIAL_WITH_FIRST_RESULT)
 	for _, exec := range a.repositories {
 		p.Enqueue(func(ctx context.Context, dto queryVoteUsecase.QueryDTO) (queryVoteUsecase.QueryDTO, error) {
 			totalMap, err := exec.GetTotalForParticipant(ctx, dto.RoundID)
@@ -62,7 +62,7 @@ func (a *queryAggregator) aggregateTotalVotesForParticipantHandler() pipe.Pipe[q
 }
 
 func (a *queryAggregator) aggregateTotalVotesForHourHandler() pipe.Pipe[queryVoteUsecase.QueryDTO] {
-	p := pipe.NewPipe[queryVoteUsecase.QueryDTO]()
+	p := pipe.NewPipe[queryVoteUsecase.QueryDTO](pipe.SEQUENTIAL_WITH_FIRST_RESULT)
 	for _, exec := range a.repositories {
 		p.Enqueue(func(ctx context.Context, dto queryVoteUsecase.QueryDTO) (queryVoteUsecase.QueryDTO, error) {
 			totalMap, err := exec.GetTotalForHour(ctx, dto.RoundID)
@@ -85,19 +85,10 @@ func (a *queryAggregator) aggregateTotalVotesForHourHandler() pipe.Pipe[queryVot
 
 func (a *queryAggregator) GetAggregatedUseCase() queryVoteUsecase.QueryVoteUseCase {
 
-	executionMap := map[voteUsecase.HandlerFuncEnum]queryVoteUsecase.OrderedExecutionPipeDTO{
-		voteUsecase.HandlerFuncGetTotalVotes: {
-			ExecutionType: pipe.SEQUENTIAL_WITH_FIRST_RESULT.String(),
-			Pipe:          a.aggregateTotalVotesHandler(),
-		},
-		voteUsecase.HandlerFuncGetTotalVotesForParticipant: {
-			ExecutionType: pipe.SEQUENTIAL_WITH_FIRST_RESULT.String(),
-			Pipe:          a.aggregateTotalVotesForParticipantHandler(),
-		},
-		voteUsecase.HandlerFuncGetTotalVotesForHour: {
-			ExecutionType: pipe.SEQUENTIAL_WITH_FIRST_RESULT.String(),
-			Pipe:          a.aggregateTotalVotesForHourHandler(),
-		},
+	executionMap := map[voteUsecase.HandlerFuncEnum]voteUsecase.Pipe[queryVoteUsecase.QueryDTO]{
+		voteUsecase.HandlerFuncGetTotalVotes:               a.aggregateTotalVotesHandler(),
+		voteUsecase.HandlerFuncGetTotalVotesForParticipant: a.aggregateTotalVotesForParticipantHandler(),
+		voteUsecase.HandlerFuncGetTotalVotesForHour:        a.aggregateTotalVotesForHourHandler(),
 	}
 	return queryVoteUsecase.NewQueryVote(executionMap)
 }

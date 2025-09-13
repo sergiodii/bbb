@@ -2,11 +2,8 @@ package vote
 
 import "context"
 
-type ExecutionType interface {
-	String() string
-}
-
+// Outbound Ports
 type Pipe[T any] interface {
 	Enqueue(...func(context.Context, T) (T, error))
-	Execute(context.Context, string, T) (T, error)
+	Execute(context.Context, T) (T, error)
 }
