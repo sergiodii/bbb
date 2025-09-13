@@ -1,4 +1,4 @@
-# 📋 COMMENTS.md - Sistema de Votação BBB
+# 📋 HISTORY.md - Sistema de Votação BBB
 ## 🎯 Contexto do Desafio
 
 ### Problema Original
