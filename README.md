@@ -1,6 +1,4 @@
-# 🎯 Sistema de Votação BBB - Desafio Globo.com
-
-> **Solução completa para o desafio de votação do paredão do BBB usando Go e arquitetura moderna**
+# 🎯 Sistema de Votação BBB
 
 Sistema de votação em alta performance desenvolvido em **Go Lang**, seguindo **Clean Architecture**, **SOLID**, **Clean Code** e implementando **CQRS** (Command Query Responsibility Segregation) para atender aos requisitos de 1000+ votos/segundo do BBB.
 
