@@ -1,4 +1,3 @@
-````markdown
 # 💻 BBB Development Guide - Globo.com Voting System
 
 ## 1. Quick Start - BBB Development Environment
